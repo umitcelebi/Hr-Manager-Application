@@ -5,7 +5,7 @@
 ![Screenshot_2](https://user-images.githubusercontent.com/53602829/94266558-fdd8f500-ff42-11ea-8a03-b8ab9ac125fd.png)
 
 ### USER -> _ROLE_ADMIN_
-
+______________________________________________
 
 ![Screenshot_3](https://user-images.githubusercontent.com/53602829/94266630-18ab6980-ff43-11ea-8bdd-a740e211f340.png)
 
@@ -19,7 +19,7 @@
 
 
 ### USER -> _ROLE_USER_
-
+_____________________________________________
 
 ![Screenshot_8](https://user-images.githubusercontent.com/53602829/94266655-1ea14a80-ff43-11ea-9397-201c6d7c037d.png)
 
