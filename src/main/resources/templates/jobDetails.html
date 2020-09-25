@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Job Details</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<!-- START OF NAVBAR MENU -->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-link" th:href="@{/hr/createjob}">Create Job</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/job/jobs}">Job List</a>
+    </li>
+  </ul>
+  <ul class="nav navbar-nav ml-auto">
+		<li class="nav-item">
+			<form th:action="@{/logout}" method="post">
+				<button class="nav-link btn btn-danger" type="submit">Logout</button>
+			 </form>
+		</li>
+	</ul>
+</nav>
+<!-- END OF NAVBAR MENU -->
+
+<br>
+
+<div class="container">
+  <h2>Job Details</h2>
+  <p>You can see job details and apply for this job:</p>            
+  <table class="table table-dark">
+    <tbody>
+      <tr>
+        <th>Job Title:</th>
+        <td th:text="${job.jobTitle}"></td>
+      </tr>
+      <tr>
+        <th>Description: </th>
+        <td th:text="${job.jobDescription}"></td>
+      </tr>
+      <tr>
+        <th>Number of People to Hire: </th>
+        <td th:text="${job.numberOfPeople}"></td>
+      </tr>
+      <tr>
+        <th>Last Application: </th>
+        <td th:text="${job.lastApplication.getDate()+'/'+(job.lastApplication.getMonth()+1)+'/'+(job.lastApplication.getYear()+1900)}"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- START OF APPLY FOR JOB -->
+
+<div class="container" sec:authorize="hasRole('ROLE_USER')">
+  <h2>Create Job</h2>
+  <form action="#" th:action="@{/job/apply}" th:object="${applicant}"  method="post" enctype="multipart/form-data">
+ 
+ 	<div class="form-group">
+      <input type="hidden" class="form-control" id="jobId" name="jobId" th:value="${job.id}">
+    </div>
+ 	
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" class="form-control" id="name" name="name" th:field="*{name}" placeholder="Please Enter Name" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="text" class="form-control" id="email" name="email" th:field="*{email}" placeholder="Please Enter Email" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="phone">Phone:</label>
+      <input type="text" class="form-control" id="phone" name="phone" th:field="*{phone}" placeholder="Please Enter Phone" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="address">Address:</label>
+      <input type="text" class="form-control" id="address" name="address" th:field="*{address}" placeholder="Please Enter Address" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="thoughtsOnJob">Thoughts On Job:</label>
+      <input type="text" class="form-control" id="thoughtsOnJob" name="thoughtsOnJob" th:field="*{thoughtsOnJob}" placeholder="Please Enter Your Thought" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="uploadedfile">Resume:</label>
+      <input type="file" class="form-control" id="uploadedfile" name="uploadedfile" required>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+<!-- END OF APPLY FOR JOB -->
+
+
+<!-- START OF APPLICANTS -->
+
+<div class="container" sec:authorize="hasRole('ROLE_ADMIN')">
+  <h2>APPLICANTS</h2>
+  <p>applicants here.</p>            
+  <table class="table table-dark">
+  	<thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Thoughts On Job</th>
+        <th>Resume</th>
+      </tr>
+    </thead>
+    <tbody>
+    	<tr th:each="applicant:${job.applicants}">
+      		<td th:text="${applicant.name}"></td>
+      		<td th:text="${applicant.email}"></td>
+      		<td th:text="${applicant.phone}"></td>
+      		<td th:text="${applicant.address}"></td>
+      		<td th:text="${applicant.thoughtsOnJob}"></td>
+      		<td><a th:href="@{/hr/download/{fileId}(fileId=${applicant.file.id})}" class="btn btn-success">Download</a></td>
+    	</tr>
+      
+    </tbody>
+  </table>
+</div>
+
+<!-- END OF APPLICANTS -->
+
+</body>
+</html>
