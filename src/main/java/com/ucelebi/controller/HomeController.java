@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ucelebi.model.User;
-import com.ucelebi.repo.UserRepository;
+import com.ucelebi.service.UserService;
 
 
 @Controller
 public class HomeController {
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home() {
@@ -33,7 +33,7 @@ public class HomeController {
 	public ModelAndView signUp(@ModelAttribute User user) {
 		
 		user.setRole("ROLE_USER");
-		userRepository.save(user);
+		userService.createUser(user);
 		
 		return new ModelAndView("login");
 	}
